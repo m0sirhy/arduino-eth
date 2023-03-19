@@ -95,39 +95,7 @@ void loop()
    
 
     EthernetClient client = TCPserver.available();
-      if (button4.isPressed()){
-      client=true;
-      gotAMessage=true;
-        command='4';
-Serial.println("4");
-        
-    }
-     if (button3.isPressed()){
-       client=true;
-      gotAMessage=true;
-        command='3';
-         
-Serial.println("3");
-
-    }
-    else if (button2.isPressed())
-    {
-      gotAMessage=true;
-        command='2';
-       
-
-Serial.println("2");
-
-    }
-    else if (button1.isPressed())
-    {
-      gotAMessage=true;
-        command='1';
-       Serial.println("1");
-
-
-    }
-
+     
     if (client)
     {
         if (!gotAMessage)
@@ -145,67 +113,54 @@ Serial.println("2");
     // Read the command from the TCP client:
     if (gotAMessage)
     {
-        switch (command)
-        {
-        case '1':
-            digitalWrite(RELAY_4, LOW); // Turn Switch off relay - on forn unit 2
-            delay(300);
-            digitalWrite(RELAY_4, HIGH); // Turn Switch off relay - OFF forn unit 1
-            Serial.print("- relay 1");
-            client.println("1");
+       if (command == '1' || button1.isPressed()) {
+    digitalWrite(RELAY_4, LOW);
+    delay(300);
+    digitalWrite(RELAY_4, HIGH);
+    Serial.print("- relay 1");
+    client.println("1");
 
-            // this block act as pulse
-            digitalWrite(RELAY_1, LOW); //  Turn Switch on relay - on forn unit 1
-            delay(400);
-            digitalWrite(RELAY_1, HIGH); //  Turn Switch on relay - on forn unit 1
+    digitalWrite(RELAY_1, LOW);
+    delay(400);
+    digitalWrite(RELAY_1, HIGH);
 
-            gotAMessage = false;
-           command = '\0';
+    gotAMessage = false;
+    command = '\0';
+} else if (command == '2' || button2.isPressed()) {
+    digitalWrite(RELAY_3, LOW);
+    delay(300);
+    digitalWrite(RELAY_3, HIGH);
+    Serial.print("- Received command: 2");
+    client.println("2");
 
-            break;
-        case '2':
-            digitalWrite(RELAY_3, LOW); // Turn Switch off relay - on forn unit 1
-            delay(300);
-            digitalWrite(RELAY_3, HIGH); // Turn Switch off relay - OFF forn unit 1
-            Serial.print("- Received command: 2");
-            client.println("2");
+    digitalWrite(RELAY_2, LOW);
+    delay(200);
+    digitalWrite(RELAY_2, HIGH);
 
-            // this block act as pulse
-            digitalWrite(RELAY_2, LOW); //  Turn Switch on relay - on forn unit 2
-            delay(200);
-            digitalWrite(RELAY_2, HIGH); //  Turn Switch on relay - off forn unit 2
-           
+    gotAMessage = false;
+    command = '\0';
+} else if (command == '3' || button3.isPressed()) {
+    digitalWrite(RELAY_3, LOW);
+    delay(300);
+    digitalWrite(RELAY_3, HIGH);
+    client.println("3");
+    Serial.print("- Received command: 3");
 
-            gotAMessage = false;
-              command = '\0';
-            break;
-        case '3':
-            digitalWrite(RELAY_3, LOW); // Turn Switch off relay - on forn unit 1
-            delay(300);
-            digitalWrite(RELAY_3, HIGH); // Turn Switch off relay - OFF forn unit 1
-            client.println("3");
-            Serial.print("- Received command: 3");
+    gotAMessage = false;
+    command = '\0';
+} else if (command == '4'  || button4.isPressed()) {
+    digitalWrite(RELAY_4, LOW);
+    delay(300);
+    digitalWrite(RELAY_4, HIGH);
+    client.println("4");
+    Serial.print("- Received command: 4");
 
-            gotAMessage = false;
-          
-command = '\0';
-            break;
-        case '4':
-            digitalWrite(RELAY_4, LOW); // Turn Switch off relay - on forn unit 1
-            delay(300);
-            digitalWrite(RELAY_4, HIGH); // Turn Switch off relay - OFF forn unit 1
-            client.println("4");
-            Serial.print("- Received command: 4");
+    gotAMessage = false;
+    command = '\0';
+} else {
+    command = '\0';
+    gotAMessage = false;
+}
 
-            gotAMessage = false;
-          
-command = '\0';
-            break;
-       default: 
-              command = '\0';
-                   gotAMessage = false;
-break;
-       
-        }
     }
 }
