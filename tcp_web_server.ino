@@ -123,7 +123,7 @@ void loop()
     digitalWrite(RELAY_1, LOW);
     delay(400);
     digitalWrite(RELAY_1, HIGH);
-
+lasts='1';
     gotAMessage = false;
     command = '\0';
 } else if (command == '2' || button2.isPressed() && lasts!='2') {
@@ -136,7 +136,7 @@ void loop()
     digitalWrite(RELAY_2, LOW);
     delay(200);
     digitalWrite(RELAY_2, HIGH);
-
+lasts='2';
     gotAMessage = false;
     command = '\0';
 } else if (command == '3' || button3.isPressed() && lasts!='3') {
@@ -145,7 +145,7 @@ void loop()
     digitalWrite(RELAY_3, HIGH);
     client.println("3");
     Serial.print("- Received command: 3");
-
+lasts='3';
     gotAMessage = false;
     command = '\0';
 } else if (command == '4'  || button4.isPressed() && lasts!='4') {
@@ -154,7 +154,7 @@ void loop()
     digitalWrite(RELAY_4, HIGH);
     client.println("4");
     Serial.print("- Received command: 4");
-
+lasts='4';
     gotAMessage = false;
     command = '\0';
 } else {
