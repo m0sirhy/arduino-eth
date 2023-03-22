@@ -16,7 +16,7 @@ const int RELAY_1 = 9;
 const int RELAY_2 = 8;
 const int RELAY_3 = 7;
 const int RELAY_4 = 6;
-const char lasts;
+ char lasts;
 ezButton button1(2); // create ezButton object that attach to pin 6;
 ezButton button2(3); // create ezButton object that attach to pin 7;
 ezButton button3(A0); // create ezButton object that attach to pin 8;
@@ -113,7 +113,7 @@ void loop()
     // Read the command from the TCP client:
     if (gotAMessage)
     {
-       if (command == '1' || button1.isPressed() && lasts!='1') {
+       if ((command == '1' || button1.isPressed()) && lasts!='1') {
     digitalWrite(RELAY_4, LOW);
     delay(300);
     digitalWrite(RELAY_4, HIGH);
@@ -126,7 +126,7 @@ void loop()
 lasts='1';
     gotAMessage = false;
     command = '\0';
-} else if (command == '2' || button2.isPressed() && lasts!='2') {
+} else if ((command == '2' || button2.isPressed()) && lasts!='2') {
     digitalWrite(RELAY_3, LOW);
     delay(300);
     digitalWrite(RELAY_3, HIGH);
@@ -139,7 +139,7 @@ lasts='1';
 lasts='2';
     gotAMessage = false;
     command = '\0';
-} else if (command == '3' || button3.isPressed() && lasts!='3') {
+} else if ((command == '3' || button3.isPressed()) && lasts!='3') {
     digitalWrite(RELAY_3, LOW);
     delay(300);
     digitalWrite(RELAY_3, HIGH);
@@ -148,7 +148,7 @@ lasts='2';
 lasts='3';
     gotAMessage = false;
     command = '\0';
-} else if (command == '4'  || button4.isPressed() && lasts!='4') {
+} else if ((command == '4'  || button4.isPressed()) && lasts!='4') {
     digitalWrite(RELAY_4, LOW);
     delay(300);
     digitalWrite(RELAY_4, HIGH);
