@@ -16,9 +16,9 @@ const int RELAY_1 = 9;
 const int RELAY_2 = 8;
 const int RELAY_3 = 7;
 const int RELAY_4 = 6;
- char lasts;
-ezButton button1(2); // create ezButton object that attach to pin 6;
-ezButton button2(3); // create ezButton object that attach to pin 7;
+char lasts;
+ezButton button1(2);  // create ezButton object that attach to pin 6;
+ezButton button2(3);  // create ezButton object that attach to pin 7;
 ezButton button3(A0); // create ezButton object that attach to pin 8;
 ezButton button4(5);
 
@@ -39,11 +39,11 @@ void setup()
 
     digitalWrite(RELAY_3, HIGH); // Turn Switch off relay - OFF forn unit 1
     digitalWrite(RELAY_4, HIGH); // Turn Switch off relay - OFF forn unit 1
-  button1.setDebounceTime(50); // set debounce time to 50 milliseconds
-    button2.setDebounceTime(50);  // set debounce time to 50 milliseconds
-    button3.setDebounceTime(50);  // set debounce time to 50 milliseconds
-    button4.setDebounceTime(50);  // set debounce time to 50 milliseconds
-    
+    button1.setDebounceTime(50); // set debounce time to 50 milliseconds
+    button2.setDebounceTime(50); // set debounce time to 50 milliseconds
+    button3.setDebounceTime(50); // set debounce time to 50 milliseconds
+    button4.setDebounceTime(50); // set debounce time to 50 milliseconds
+
     Serial.begin(9600);
     while (!Serial)
     {
@@ -87,15 +87,14 @@ void setup()
 }
 
 void loop()
-{ 
+{
     button1.loop(); // MUST call the loop() function first
     button2.loop(); // MUST call the loop() function first
     button3.loop(); // MUST call the loop() function first
     button4.loop(); // MUST call the loop() function first
-   
 
     EthernetClient client = TCPserver.available();
-     
+
     if (client)
     {
         if (!gotAMessage)
@@ -106,14 +105,42 @@ void loop()
             command = client.read();
             Serial.println("command: ");
             Serial.print(command);
-            
         }
     }
 
     // Read the command from the TCP client:
     if (gotAMessage)
     {
-       if ((command == '1' || button1.isPressed()) && lasts!='1') {
+        if ((command == '1' || button1.isPressed()) && lasts != '1')
+        {
+        }
+        else if ((command == '2' || button2.isPressed()) && lasts != '2')
+        {
+        }
+        else if ((command == '3' || button3.isPressed()) && lasts != '3')
+        {
+            digitalWrite(RELAY_3, LOW);
+            delay(300);
+            digitalWrite(RELAY_3, HIGH);
+            client.println("3");
+            Serial.print("- Received command: 3");
+            lasts = '3';
+            gotAMessage = false;
+            command = '\0';
+        }
+        else if ((command == '4' || button4.isPressed()) && lasts != '4')
+        {
+        }
+        else
+        {
+            command = '\0';
+            gotAMessage = false;
+        }
+    }
+}
+
+void relay1act
+{
     digitalWrite(RELAY_4, LOW);
     delay(300);
     digitalWrite(RELAY_4, HIGH);
@@ -123,10 +150,12 @@ void loop()
     digitalWrite(RELAY_1, LOW);
     delay(400);
     digitalWrite(RELAY_1, HIGH);
-lasts='1';
+    lasts = '1';
     gotAMessage = false;
     command = '\0';
-} else if ((command == '2' || button2.isPressed()) && lasts!='2') {
+}
+void relay2act
+{
     digitalWrite(RELAY_3, LOW);
     delay(300);
     digitalWrite(RELAY_3, HIGH);
@@ -136,31 +165,30 @@ lasts='1';
     digitalWrite(RELAY_2, LOW);
     delay(200);
     digitalWrite(RELAY_2, HIGH);
-lasts='2';
+    lasts = '2';
     gotAMessage = false;
     command = '\0';
-} else if ((command == '3' || button3.isPressed()) && lasts!='3') {
+}
+void relay3act
+{
     digitalWrite(RELAY_3, LOW);
     delay(300);
     digitalWrite(RELAY_3, HIGH);
     client.println("3");
     Serial.print("- Received command: 3");
-lasts='3';
+    lasts = '3';
     gotAMessage = false;
     command = '\0';
-} else if ((command == '4'  || button4.isPressed()) && lasts!='4') {
+}
+
+void relay4act
+{
     digitalWrite(RELAY_4, LOW);
     delay(300);
     digitalWrite(RELAY_4, HIGH);
     client.println("4");
     Serial.print("- Received command: 4");
-lasts='4';
+    lasts = '4';
     gotAMessage = false;
     command = '\0';
-} else {
-    command = '\0';
-    gotAMessage = false;
-}
-
-    }
 }
