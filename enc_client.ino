@@ -3,10 +3,10 @@
 
 EthernetClient client;
 unsigned long nextConnectTime = 0;
-ezButton button1(5); // create ezButton object that attach to pin 5;
-ezButton button2(6); // create ezButton object that attach to pin 6;
-ezButton button3(7); // create ezButton object that attach to pin 7;
-ezButton button4(8); // create ezButton object that attach to pin 8;
+ezButton button1(5,PULLUP); // create ezButton object that attach to pin 5;
+ezButton button2(6,PULLUP); // create ezButton object that attach to pin 6;
+ezButton button3(7,PULLUP); // create ezButton object that attach to pin 7;
+ezButton button4(8,PULLUP); // create ezButton object that attach to pin 8;
 const int LED1 = 4;
 const int LED2 = 3;
 int size;
