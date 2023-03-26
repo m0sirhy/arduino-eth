@@ -17,10 +17,6 @@ const int RELAY_2 = 8;
 const int RELAY_3 = 7;
 const int RELAY_4 = 6;
 char lasts;
-ezButton button1(2);  // create ezButton object that attach to pin 6;
-ezButton button2(3);  // create ezButton object that attach to pin 7;
-ezButton button3(A0); // create ezButton object that attach to pin 8;
-ezButton button4(5);
 
 byte mac[] = {0x00, 0xAA, 0xBB, 0xCC, 0xDE, 0x02};
 
@@ -34,15 +30,7 @@ boolean gotAMessage = false; // whether or not you got a message from the client
 char command;
 void setup()
 {
-    digitalWrite(RELAY_1, HIGH); //  Turn Switch on relay - on forn unit 1
-    digitalWrite(RELAY_2, HIGH); // Turn Switch off relay - OFF forn unit 1
-
-    digitalWrite(RELAY_3, HIGH); // Turn Switch off relay - OFF forn unit 1
-    digitalWrite(RELAY_4, HIGH); // Turn Switch off relay - OFF forn unit 1
-    button1.setDebounceTime(50); // set debounce time to 50 milliseconds
-    button2.setDebounceTime(50); // set debounce time to 50 milliseconds
-    button3.setDebounceTime(50); // set debounce time to 50 milliseconds
-    button4.setDebounceTime(50); // set debounce time to 50 milliseconds
+   
 
     Serial.begin(9600);
     while (!Serial)
@@ -56,7 +44,7 @@ void setup()
     pinMode(RELAY_3, OUTPUT);
     pinMode(RELAY_4, OUTPUT);
 
-    Serial.println("ARDUINO #2: TCP SERVER + AN LED");
+    Serial.println("ARDUINO #2: TCP SERVER + AN Solar");
 
     // Initialize Ethernet Shield:
     if (Ethernet.begin(mac) == 0)
@@ -88,19 +76,14 @@ void setup()
 
 void loop()
 {
-    button1.loop(); // MUST call the loop() function first
-    button2.loop(); // MUST call the loop() function first
-    button3.loop(); // MUST call the loop() function first
-    button4.loop(); // MUST call the loop() function first
-
     EthernetClient client = TCPserver.available();
 
     if (client)
     {
         if (!gotAMessage)
         {
-            Serial.println("We have a new client");
-            client.println("Hello, client!");
+            Serial.println("We have a new order");
+            client.println("Order, Recived!");
             gotAMessage = true;
             command = client.read();
             Serial.println("command: ");
@@ -113,23 +96,20 @@ void loop()
     {
         if ((command == '1' || button1.isPressed()) && lasts != '1')
         {
+           relay1act();
+           
         }
         else if ((command == '2' || button2.isPressed()) && lasts != '2')
         {
+           relay2act();
         }
         else if ((command == '3' || button3.isPressed()) && lasts != '3')
         {
-            digitalWrite(RELAY_3, LOW);
-            delay(300);
-            digitalWrite(RELAY_3, HIGH);
-            client.println("3");
-            Serial.print("- Received command: 3");
-            lasts = '3';
-            gotAMessage = false;
-            command = '\0';
+           relay3act
         }
         else if ((command == '4' || button4.isPressed()) && lasts != '4')
         {
+           relay4act();
         }
         else
         {
