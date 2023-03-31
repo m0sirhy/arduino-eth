@@ -94,23 +94,32 @@ void loop()
     // Read the command from the TCP client:
     if (gotAMessage)
     {
-        if ((command == '1' || button1.isPressed()) && lasts != '1')
+        if (command == '1'  && lasts != '1')
         {
            relay1act();
-           
+               client.println("1");
+
         }
-        else if ((command == '2' || button2.isPressed()) && lasts != '2')
+        else if (command == '2' && lasts != '2')
         {
            relay2act();
+               client.println("2");
+
         }
-        else if ((command == '3' || button3.isPressed()) && lasts != '3')
+        else if (command == '3' && lasts != '3')
         {
-           relay3act
+           relay3act();
+               client.println("3");
+
         }
-        else if ((command == '4' || button4.isPressed()) && lasts != '4')
+        
+        else if (command == '4' && lasts != '4')
         {
            relay4act();
+               client.println("4");
+
         }
+        
         else
         {
             command = '\0';
@@ -119,54 +128,50 @@ void loop()
     }
 }
 
-void relay1act
+void relay1act()
 {
-    digitalWrite(RELAY_4, LOW);
-    delay(300);
     digitalWrite(RELAY_4, HIGH);
-    Serial.print("- relay 1");
-    client.println("1");
-
-    digitalWrite(RELAY_1, LOW);
     delay(400);
+    digitalWrite(RELAY_4, LOW);
+    Serial.print("- relay 1");
+
     digitalWrite(RELAY_1, HIGH);
+    delay(400);
+    digitalWrite(RELAY_1, LOW);
     lasts = '1';
     gotAMessage = false;
     command = '\0';
 }
-void relay2act
+void relay2act()
 {
-    digitalWrite(RELAY_3, LOW);
-    delay(300);
     digitalWrite(RELAY_3, HIGH);
+    delay(400);
+    digitalWrite(RELAY_3, LOW);
     Serial.print("- Received command: 2");
-    client.println("2");
 
-    digitalWrite(RELAY_2, LOW);
-    delay(200);
     digitalWrite(RELAY_2, HIGH);
+    delay(400);
+    digitalWrite(RELAY_2, LOW);
     lasts = '2';
     gotAMessage = false;
     command = '\0';
 }
-void relay3act
+void relay3act()
 {
-    digitalWrite(RELAY_3, LOW);
-    delay(300);
     digitalWrite(RELAY_3, HIGH);
-    client.println("3");
+    delay(400);
+    digitalWrite(RELAY_3, LOW);
     Serial.print("- Received command: 3");
     lasts = '3';
     gotAMessage = false;
     command = '\0';
 }
 
-void relay4act
+void relay4act()
 {
-    digitalWrite(RELAY_4, LOW);
-    delay(300);
     digitalWrite(RELAY_4, HIGH);
-    client.println("4");
+    delay(400);
+    digitalWrite(RELAY_4, LOW);
     Serial.print("- Received command: 4");
     lasts = '4';
     gotAMessage = false;
